@@ -1,0 +1,145 @@
+---
+title: "Задание2"
+author: "Ruslan Davletov"
+date: "-----"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Пакеты
+
+```{r}
+install.packages("moments")
+library(moments)
+install.packages("ggplot2")
+library (ggplot2)
+install.packages("nortest")
+library(nortest)
+```
+
+## В результате тестирования способностей к абстрактному мышлению групп студентов были получены выборки, представленные в таблице 1 (Данные в электронном виде хранятся в файле Статистика_В_Excel.xlsx) . Для заданного варианта исходных данных (двух групп студентов) определить:
+
+• Размах выборок, минимальные и максимальные значения, рассчитать выборочное среднее, выборочную дисперсию, коэффициент вариации, ассиметрию и эксцесс, определить нижний и верхний квартиль, моду.
+
+• Построить гистограммы, диаграммы ящик с усами, графики Q-Q Plot.
+
+• Сделать статистические выводы о параметрах распределений. Проверить гипотезу о нормальном законе распределения.
+
+• Для каждой из выборок найти доверительные интервалы для математического ожидания и дисперсии с доверительной вероятностью 0,95.
+
+• Определить имеются ли существенные различия в результатах тестирования способностей студентов в сравниваемых группах на уровне значимости 0,05 и 0,01. Результаты измерений независимы. Выводы обосновать.
+
+### Создание выборок
+
+```{r}
+group11 = c(20,8,11,16,17,13,19,21,17,27,22,10,19,15,23,15,15,13,21,16,24,17,13,13,16,13,8,22,21,12)
+group22 = c(8,14,14,14,13,16,14,24,11,15,20,17,8,13,17,11,17,11,21,16,18,13,16,13,19,14,23,18,14,17)
+```
+
+### Описательная статистика для каждой группы
+
+```{r}
+print("Описательная статистика для первой группы:")
+summary(group11)
+print("Дисперсия:")
+var(group11)
+print("Стандартное отклонение:")
+st_1st = sd(group11)
+print("Cтандартная ошибка средней:")
+sd(group11)/sqrt(length(group11))
+print("Эксцесс:")
+kurtosis(group11)
+print("Ассиметрия:")
+skewness(group11)
+print("Сумма:")
+sum(group11)
+mode1 = function(){
+    return({names(which.max(table(group11)))})
+}
+mode1()
+print("Оценка параметров первой группы:")
+min_1st = min(group11)
+max_1st = max(group11)
+avg_1st = mean(group11)
+print("Оценка a,b:")
+a_1st = avg_1st
+a_1st
+s_1st = st_1st
+s_1st
+print("Шаг:")
+step_1st = (max_1st - min_1st)/6
+step_1st
+print("Формула Стерджа:")
+sterdj_1st = 1 + 1.4 * log(length(group11))
+sterdj_1st
+print("Размах выборки:")
+size = max(group11)-min(group11)
+size
+```
+
+```{r}
+print("Описательная статистика для второй группы:")
+summary(group22)
+print("Дисперсия:")
+var(group22)
+print("Стандартное отклонение:")
+st_2nd = sd(group22)
+print("Cтандартная ошибка средней:")
+sd(group22)/sqrt(length(group22))
+print("Эксцесс:")
+kurtosis(group22)
+print("Ассиметрия:")
+skewness(group22)
+print("Сумма:")
+sum(group22)
+mode1 = function(){
+    return({names(which.max(table(group22)))})
+}
+mode1()
+print("Оценка параметров второй группы:")
+min_2nd = min(group22)
+max_2nd = max(group22)
+avg_2nd = mean(group22)
+print("Оценка a,b:")
+a_2nd = avg_2nd
+a_2nd
+s_2nd = st_2nd
+s_2nd
+print("Шаг:")
+step_2nd = (max_2nd - min_2nd)/6
+step_2nd
+print("Формула Стерджа:")
+sterdj_2nd = 1 + 1.4 * log(length(group22))
+sterdj_2nd
+print("Размах выборки:")
+size = max(group22)-min(group22)
+size
+```
+
+### Графики
+
+```{r}
+hist(group11, col = 'red', main = "Гистограммы первой группы")
+lines(density(group11), col = 'blue')
+hist(group22, col = 'green', main = "Гистограммы второй группы")
+lines(density(group22), col = 'blue')
+qqnorm(group11, col = 'blue', main = "Q-Q Plot для первой группы")
+qqline(group11, col = 'green')
+qqnorm(group22, col = 'red', main = "Q-Q Plot для второй группы")
+qqline(group22, col = 'green')
+boxplot(group11,group22, col = 'lightblue', main = "Ящик с усами для 2-ух групп")
+```
+
+### Тесты
+
+```{r}
+shapiro.test(group11)
+shapiro.test(group22)
+```
+
+```{r}
+t.test(group11,group22, paired = TRUE)
+```
